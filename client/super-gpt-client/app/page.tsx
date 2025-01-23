@@ -1,26 +1,50 @@
 'use client';
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+
 import styles from "./page.module.css";
 
+const defaultResult = { content: '' };
+
 export default function Home() {
-  const [data, setData] = useState({ data: ''});
+  const [prompt, setPrompt] = useState('');
+  const [result, setResult] = useState(defaultResult);
+
+  const onPromptChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt(event.target.value);
+  };
 
   async function fetchData() {
-    const response = await fetch('http://localhost:3100/chat', {
-      method: 'POST'
-    });
-    const resData = await response.json();
-    setData(resData);
+    setResult(defaultResult);
+
+    if (prompt) {
+      const response = await fetch('http://localhost:3100/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ chatData: prompt })
+      });
+
+      if (!response.ok) {
+        console.log("Failed to send chat data.");
+        throw new Error("Failed to send chat data.");
+      }
+      
+      const resData = await response.json();
+      setResult(resData.result);
+    }
   }
 
   return (
     <div className={styles.page}>
       <div className={styles.promptContainer}>
-        <input type="text" placeholder="Enter prompt to send to ChatGPT..." />
+        <textarea
+          onChange={onPromptChangeHandler}
+          placeholder="Enter prompt to send to ChatGPT..." />
         <button onClick={fetchData}>Submit</button>
       </div>
-      <p>{data.data}</p>
+      <p>{result?.content}</p>
     </div>
   );
 }
