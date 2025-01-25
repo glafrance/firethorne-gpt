@@ -9,24 +9,49 @@ app.use(express.json());
 
 const port = 3100;
 
-app.post('/chat', async (req, res) => {
-  const chatData = req.body.chatData;
+const chatHistory = [];
 
-  const chatResponse = await sendChatData(chatData);
-  console.log(chatResponse);
+app.get('/chat', async (req, res) => {
+  res.send(chatHistory);
+});
+
+app.post('/chat', async (req, res) => {
+  const prompt = req.body.prompt;
+
+  const chatResponse = await sendChatData(prompt);
 
   if (chatResponse?.choices?.length) {
-    res.send({ "result": chatResponse.choices[0].message });    
+    const response = chatResponse.choices[0];
+
+    if (response) {
+      const responseText = response.message?.content;
+
+      if (responseText) {
+        chatHistory.push({
+          prompt,
+          responseText
+        });
+
+        res.send({ "result": 'ok' });      
+      } else {
+        sendErrorResponse();
+      }
+    } else {
+      sendErrorResponse();  
+    }
   } else {
-    res.send({ "result": "Error processing chat data." });
+    sendErrorResponse();
   }
 });
 
+const sendErrorResponse = (response) => {
+  response.send({ "result": "Error processing chat data." });
+};
+
 const sendChatData = async (data) => {
   const completion = await openaiObj.chat.completions.create({
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     messages: [
-        { role: "developer", content: "You are a helpful assistant." },
         {
             role: "user",
             content: data,
