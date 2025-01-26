@@ -1,19 +1,19 @@
 'use client'
 
-import { v4 as uuidv4 } from 'uuid';
-
 import { getChatHistory } from "@/app/utils/http";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatHistoryItem from "./chat-history-item";
 import classes from './chat-history-list.module.css';
 
 interface ChatItem {
+  id: string,
   prompt: string;
-  responseText: string;
+  response: string;
 }
 
 const ChatHistoryList = () => {
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+  const hiddenRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     async function fetchChatHistory() {
@@ -22,15 +22,34 @@ const ChatHistoryList = () => {
     };
 
     fetchChatHistory();
+
   }, []);
-  
-  const history = chatHistory && chatHistory.map(item => <ChatHistoryItem key={uuidv4()} prompt={item.prompt} responseText={item.responseText} />);
+
+  useEffect(() => {
+    if (hiddenRef.current) {
+      hiddenRef.current.scrollIntoView({
+        behavior: 'smooth', // Optional for smooth scrolling
+        block: 'end'
+      });
+    }  
+  }, [chatHistory, hiddenRef]);
+
+  const history = chatHistory && chatHistory.map(
+    item => <ChatHistoryItem 
+      key={item.id} 
+      prompt={item.prompt} 
+      response={item.response} 
+    />
+  );
 
   return (
-    <div className={classes.List}>
-      <h1>Chat History List</h1>
-      {history}
-    </div>
+    <>
+      <div
+        className={classes.List}>
+        {history}
+        <div ref={hiddenRef}></div>
+      </div>
+    </>
   )
 }
 

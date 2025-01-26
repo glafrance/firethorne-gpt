@@ -1,28 +1,15 @@
 .page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
-}
-.promptContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-.promptContainer textarea {
-  width: 600px;
-  height: 150px;
-  resize: none;
   padding: 20px;
-  background-color: #f2f2f2;
-  border: none;
-  border-radius: 20px;
-  outline: none;
+  padding-top: 50px;
 }
-.promptContainer textarea:focus::placeholder {
-  color: transparent;
+.start {
+  justify-content: center;
+}
+.history {
+  justify-content: space-between;
 }

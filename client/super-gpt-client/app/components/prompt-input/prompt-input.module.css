@@ -1,13 +1,12 @@
 .Textarea {
   width: 600px;
   height: 150px;
+  min-height: 150px;
   resize: none;
   padding: 20px;
+  margin-top: 30px;
   background-color: #f2f2f2;
   border: none;
   border-radius: 20px;
   outline: none;
-}
-.Textarea:focus::placeholder {
-  color: transparent;
 }

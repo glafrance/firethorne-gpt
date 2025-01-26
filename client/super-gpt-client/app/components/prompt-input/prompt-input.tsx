@@ -1,13 +1,19 @@
 'use client'
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { submitPrompt } from "@/app/utils/http";
 import classes from './prompt-input.module.css';
-import { redirect } from "next/navigation";
 
 const PromptInput = () => {
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [prompt, setPrompt] = useState('');
+
+  useEffect(() => {
+    if (textAreaRef && textAreaRef.current) {
+      textAreaRef.current.focus();
+    }
+  }, [])
 
   const onPromptChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(event.target.value);
@@ -21,21 +27,19 @@ const PromptInput = () => {
 
       if (result) {
         // TODO this seems like a hack, but how to refresh the chat history page if user submits a prompt from there.
-        if (window.location.pathname.endsWith('chat-history')) {
-          location.reload();
-        } else {
-          redirect('/pages/chat-history');
-        }
+        location.reload();
       }
     }
   };
 
   return (
     <textarea
+      ref={textAreaRef}
       className={classes.Textarea}
       onChange={onPromptChangeHandler}
       onKeyDown={onKeyDownHandler}
-      placeholder="Enter prompt to send to ChatGPT..." />
+      placeholder="Enter prompt to send to ChatGPT..."
+    />
   )
 }
 

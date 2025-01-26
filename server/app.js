@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
 const openaiObj = new OpenAI();
+const { v4: uuidv4 } =  require('uuid');
 
 const app = express();
 app.use(cors());
@@ -15,21 +16,26 @@ app.get('/chat', async (req, res) => {
   res.send(chatHistory);
 });
 
+app.get('/chat-count', async (req, res) => {
+  res.send({count: chatHistory.length});
+});
+
 app.post('/chat', async (req, res) => {
   const prompt = req.body.prompt;
 
   const chatResponse = await sendChatData(prompt);
 
   if (chatResponse?.choices?.length) {
-    const response = chatResponse.choices[0];
+    const item = chatResponse.choices[0];
 
-    if (response) {
-      const responseText = response.message?.content;
+    if (item) {
+      const response = item.message?.content;
 
-      if (responseText) {
+      if (response) {
         chatHistory.push({
+          id: uuidv4(),
           prompt,
-          responseText
+          response
         });
 
         res.send({ "result": 'ok' });      

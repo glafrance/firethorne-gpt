@@ -29,3 +29,15 @@ export async function getChatHistory() {
   const resData = await response.json();
   return resData;
 }
+
+export async function getChatCount() {
+  const response = await fetch('http://localhost:3100/chat-count');
+
+  if (!response.ok) {
+    console.log("Failed to get chat count.");
+    throw new Error("Failed to get chat count.");
+  }
+  
+  const resData = await response.json();
+  return resData;
+}
