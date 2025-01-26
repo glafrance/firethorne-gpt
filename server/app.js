@@ -21,7 +21,9 @@ app.get('/chat-count', async (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-  const prompt = req.body.prompt;
+  const promptData = req.body;
+
+  let prompt = promptData.prompt;
 
   const chatResponse = await sendChatData(prompt);
 

@@ -1,11 +1,13 @@
-export async function submitPrompt(prompt: string) {
-  if (prompt) {
+import PromptData from "../model/PromptData";
+
+export async function submitPrompt(promptData: PromptData) {
+  if (promptData) {
     const response = await fetch('http://localhost:3100/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ prompt })
+      body: JSON.stringify(promptData)
     });
 
     if (!response.ok) {

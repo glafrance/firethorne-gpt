@@ -2,8 +2,8 @@
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { submitPrompt } from "@/app/utils/http";
 import classes from './prompt-input.module.css';
+import { sendPromptData } from "@/app/actions";
 
 const PromptInput = () => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -23,12 +23,7 @@ const PromptInput = () => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
 
-      const result = await submitPrompt(prompt);
-
-      if (result) {
-        // TODO this seems like a hack, but how to refresh the chat history page if user submits a prompt from there.
-        location.reload();
-      }
+      await sendPromptData(prompt);
     }
   };
 

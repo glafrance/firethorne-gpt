@@ -1,29 +1,16 @@
 'use client'
 
-import { getChatHistory } from "@/app/utils/http";
-import { useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import ChatHistoryItem from "./chat-history-item";
 import classes from './chat-history-list.module.css';
+import ChatData from "@/app/model/ChatData";
 
-interface ChatItem {
-  id: string,
-  prompt: string;
-  response: string;
+interface Props {
+  chatData: ChatData | undefined;
 }
 
-const ChatHistoryList = () => {
-  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+const ChatHistoryList: FC<Props> = ({chatData}) => {
   const hiddenRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    async function fetchChatHistory() {
-      const history = await getChatHistory();
-      setChatHistory(history);
-    };
-
-    fetchChatHistory();
-
-  }, []);
 
   useEffect(() => {
     if (hiddenRef.current) {
@@ -32,9 +19,9 @@ const ChatHistoryList = () => {
         block: 'end'
       });
     }  
-  }, [chatHistory, hiddenRef]);
+  }, [chatData, hiddenRef]);
 
-  const history = chatHistory && chatHistory.map(
+  const history = chatData && chatData.chatHistory && chatData.chatHistory.map(
     item => <ChatHistoryItem 
       key={item.id} 
       prompt={item.prompt} 
