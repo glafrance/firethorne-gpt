@@ -1,0 +1,26 @@
+.HintContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #e6f7ff;
+  padding: 10px 30px 20px 30px;
+  border-radius: 10px;
+  position: absolute;
+  right: 0;
+  top: 40px;
+}
+.HintContainer p {
+  margin: 0;
+}
+.Header {
+  display: flex;
+  justify-content: flex-end;
+}
+.Content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+}
+.Clickable {
+  cursor: pointer;
+}
