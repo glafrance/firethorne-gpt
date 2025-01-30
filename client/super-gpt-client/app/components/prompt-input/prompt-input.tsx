@@ -23,7 +23,7 @@ const PromptInput = () => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
 
-      await sendPromptData(prompt);
+      await sendPromptData({ prompt });
     }
   };
 
@@ -33,7 +33,7 @@ const PromptInput = () => {
       className={classes.Textarea}
       onChange={onPromptChangeHandler}
       onKeyDown={onKeyDownHandler}
-      placeholder="Enter prompt to send to ChatGPT..."
+      placeholder="Enter prompt to send to the chat engine..."
     />
   )
 }
