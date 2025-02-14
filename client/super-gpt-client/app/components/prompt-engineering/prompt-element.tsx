@@ -1,9 +1,9 @@
 'use client';
 
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Hint from "../shared/hint/hint";
 import classes from "./prompt-element.module.css";
-import { setPromptData } from "@/app/store/data-service";
+import { getConversationIdBS, setPromptData } from "@/app/store/data-service";
 
 interface Props {
   label: string;
@@ -14,14 +14,25 @@ interface Props {
 }
 
 const PromptElement: FC<Props> = ({...props}) => {
+  const [conversationId, setConversationId] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const textAreaStyle = props.height ? { height: props.height } : undefined;
 
+  useEffect(() => {
+    getConversationIdBS().subscribe({
+      next: id => {
+        if (id) {
+          setConversationId(id);
+        }
+      },
+      error: err => console.log('Error getting conversation id in prompt-element', err)
+    });  
+  }, []);
+
   const updatePromptData = () => {
-    if (textAreaRef && textAreaRef.current) {
-      console.log('textAreaRef.current.value', textAreaRef.current.value);
-      console.log('dataKey', props.dataKey);
+    if (textAreaRef && textAreaRef.current && conversationId) {
       setPromptData({
+        conversationId,
         [props.dataKey]: textAreaRef.current.value
       });
     }
