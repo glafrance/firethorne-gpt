@@ -1,43 +1,33 @@
-'use client'
 
-import { FC, useEffect, useRef } from "react";
+import { getConversationFirstGoalsBS, loadConversationFirstGoals } from "@/app/store/data-service";
+import classes from "./chat-history-list.module.css"
 import ChatHistoryItem from "./chat-history-item";
-import classes from './chat-history-list.module.css';
-import ChatData from "@/app/model/ChatData";
+import FirstGoal from "@/app/model/first-goal";
 
-interface Props {
-  chatData: ChatData | undefined;
-}
+export default function ChatHistoryList() {
+  let firstGoals: FirstGoal[] = [];
 
-const ChatHistoryList: FC<Props> = ({chatData}) => {
-  const hiddenRef = useRef<HTMLDivElement | null>(null);
+  getConversationFirstGoalsBS().subscribe({
+    next: result => {
+      firstGoals = result;
+    },
+    error: err => {
+      console.log('Error getting chat history first goals', err);
+    }
+  });  
 
-  useEffect(() => {
-    if (hiddenRef.current) {
-      hiddenRef.current.scrollIntoView({
-        behavior: 'smooth', // Optional for smooth scrolling
-        block: 'end'
-      });
-    }  
-  }, [chatData, hiddenRef]);
+  loadConversationFirstGoals();  
 
-  const history = chatData && chatData.chatHistory && chatData.chatHistory.map(
-    item => <ChatHistoryItem 
-      key={item.id} 
-      prompt={item.prompt} 
-      response={item.response} 
-    />
-  );
+  let historyItems = firstGoals?.map((item) => {
+    return <ChatHistoryItem key={item.id} firstGoal={item} /> 
+  });
 
   return (
-    <>
-      <div
-        className={classes.List}>
-        {history}
-        <div ref={hiddenRef}></div>
+    <div className={classes.Content}>
+      <h3>Conversation History</h3>
+      <div className={classes.List}>
+        {historyItems}
       </div>
-    </>
-  )
+    </div>
+  );
 }
-
-export default ChatHistoryList;

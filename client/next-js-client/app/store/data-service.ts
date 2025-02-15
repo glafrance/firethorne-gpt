@@ -1,51 +1,98 @@
 import { BehaviorSubject } from "rxjs";
-import { v4 as uuidv4 } from 'uuid';
 
-import { getChatHistory, submitPrompt } from "../utils/http";
-import PromptData from "../model/PromptData";
-import ChatData from "../model/ChatData";
+import ChatHistory from "../model/chat-history";
+import FirstGoal from "../model/first-goal";
+import ChatConversation from "../model/chat-conversation";
 
-const _conversationIdBS = new BehaviorSubject<string | null>(uuidv4());
-const _promptDataBS = new BehaviorSubject<PromptData | null>(null);
-const _chatDataBS = new BehaviorSubject<ChatData | null>(null);
+let _chatHistory: ChatHistory | null = null; 
+const _chatHistoryBS = new BehaviorSubject<ChatHistory | null>(null);
 
-let _promptData: PromptData = { role: '', perspective: '', prompt: '' };
-let _chatData: ChatData = { chatHistory: [] }; 
+let _conversationFirstGoals: FirstGoal[]; 
+const _conversationFirstGoalsBS = new BehaviorSubject<FirstGoal[]>([]);
 
-export function getConversationIdBS() {
-  return _conversationIdBS;
+export function getChatHistoryBS() {
+  return _chatHistoryBS;
 }
 
-export function setConversationId(id: string) {
-  _conversationIdBS.next(id);
-}
-
-export function getPromptDataBS() {
-  return _promptDataBS;
-}
-
-export function setPromptData(promptData: PromptData) {
-  _promptData = {
-    ..._promptData,
-    ...promptData
-  };
-
-  _promptDataBS.next(_promptData);
-}
-
-export function getChatDataBS() {
-  return _chatDataBS;
+export function getConversationFirstGoalsBS() {
+  return _conversationFirstGoalsBS;
 }
 
 export async function loadChatHistory() {
   const chatHistory = await getChatHistory();
 
-  _chatData = { chatHistory };
-  _chatDataBS.next(_chatData);
+  _chatHistory = chatHistory;
+  _chatHistoryBS.next(chatHistory);
 }
 
-export async function submitPromptData(prompt: PromptData) {
-  setPromptData(prompt);
+export async function loadConversationFirstGoals() {
+  const firstGoals = await getFirstGoals();
 
-  return await submitPrompt(_promptData);
+  _conversationFirstGoals = firstGoals;
+  _conversationFirstGoalsBS.next(firstGoals);
 }
+
+export async function getChatHistory(): Promise<ChatHistory> {
+  const response = await fetch('http://localhost:3100/chat/conversations');
+
+  if (!response.ok) {
+    console.log("Failed to get chat history.");
+    throw new Error("Failed to get chat history.");
+  }
+  
+  const resData = await response.json() as ChatHistory;
+  return resData;
+}
+
+export async function getFirstGoals(): Promise<FirstGoal[]> {
+  const response = await fetch('http://localhost:3100/chat/first-goals');
+
+  if (!response.ok) {
+    console.log("Failed to get conversation first goals.");
+    throw new Error("Failed to get conversation first goals.");
+  }
+  
+  const resData = await response.json();
+  const firstGoals = resData?.firstGoals || [];
+  return firstGoals;
+}
+
+export async function loadChatConversation(id: string): Promise<ChatConversation> {
+  const response = await fetch(`http://localhost:3100/chat/conversations/${id}`);
+
+  if (!response.ok) {
+    console.log("Failed to get conversation with id " + id);
+    throw new Error("Failed to get conversation with id" + id);
+  }
+
+  const resData = await response.json();
+
+  return resData;
+}
+
+// export async function submitPromptData(prompt: PromptData) {
+//   setPromptData(prompt);
+
+//   return await submitPrompt(_promptData);
+// }
+
+// export async function submitPrompt(promptData: PromptData) {
+//   if (promptData) {
+//     const response = await fetch('http://localhost:3100/chat', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(promptData)
+//     });
+
+//     if (!response.ok) {
+//       console.log("Failed to submit prompt.");
+//       throw new Error("Failed to submit prompt.");
+//     }
+    
+//     const resData = await response.json();
+//     return resData;
+//   }
+// }
+

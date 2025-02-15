@@ -1,0 +1,32 @@
+[
+  {
+    "items": [
+      {
+        "prompt": {
+          "goal": "Name two fruits, name only."
+        },
+        "response": "Apple, orange"
+      }
+    ]
+  },
+  {
+    "items": [
+      {
+        "prompt": {
+          "goal": "List two US states, name only."
+        },
+        "response": "Texas, Iowa"
+      }
+    ]
+  },
+  {
+    "items": [
+      {
+        "prompt": {
+          "goal": "List two JavaScript frameworks, name only."
+        },
+        "response": "Angular, ReactJS"
+      }
+    ]
+  }
+]

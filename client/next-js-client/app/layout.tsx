@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SuperGPT",
+  title: "FirethorneGPT",
   description: "Incorporating prompt engineering.",
 };
 

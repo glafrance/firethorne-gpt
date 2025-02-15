@@ -1,30 +1,24 @@
-import { FC } from "react";
-import Image from "next/image";
+'use client';
 
-import superImg from '../../assets/images/super.png';
+import FirstGoal from "@/app/model/first-goal";
 import classes from './chat-history-item.module.css';
+import { loadConversation } from "@/app/actions";
+import { useCallback } from "react";
 
-interface Props {
-  key: string,
-  prompt: string;
-  response: string;
+interface ChatHistoryItemProps {
+  firstGoal: FirstGoal;
 }
 
-const ChatHistoryItem: FC<Props> = ({prompt, response}) => {
+export default function ChatHistoryItem({firstGoal: {goal, id}}: ChatHistoryItemProps) {
+  const clickHandler = useCallback(function clickHandler() {
+    loadConversation(id);
+  }, [id]);
+
   return (
-    <div className={classes.Item}>
-      <div className={classes.Response}>
-        <Image 
-          src={superImg} 
-          width={19} 
-          height={15} 
-          alt='super icon'
-        />
-        <span className={classes.ResponseText}>{response}</span>
-      </div>
-      <p className={classes.Prompt}>{prompt}</p>
-    </div>
+    <div 
+      className={classes.Prompt} 
+      title={goal}
+      onClick={clickHandler}
+    >{goal}</div>
   );
 }
-
-export default ChatHistoryItem;

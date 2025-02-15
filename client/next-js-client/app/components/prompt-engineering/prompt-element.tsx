@@ -2,8 +2,8 @@
 
 import { FC, useEffect, useRef, useState } from "react";
 import Hint from "../shared/hint/hint";
-import classes from "./prompt-element.module.css";
-import { getConversationIdBS, setPromptData } from "@/app/store/data-service";
+import classes from "./prompt-element.module.css";  
+// import { getConversationIdBS, setPromptData } from "@/app/store/data-service";
 
 interface Props {
   label: string;
@@ -18,23 +18,23 @@ const PromptElement: FC<Props> = ({...props}) => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const textAreaStyle = props.height ? { height: props.height } : undefined;
 
-  useEffect(() => {
-    getConversationIdBS().subscribe({
-      next: id => {
-        if (id) {
-          setConversationId(id);
-        }
-      },
-      error: err => console.log('Error getting conversation id in prompt-element', err)
-    });  
-  }, []);
+  // useEffect(() => {
+  //   getConversationIdBS().subscribe({
+  //     next: id => {
+  //       if (id) {
+  //         setConversationId(id);
+  //       }
+  //     },
+  //     error: err => console.log('Error getting conversation id in prompt-element', err)
+  //   });  
+  // }, []);
 
   const updatePromptData = () => {
     if (textAreaRef && textAreaRef.current && conversationId) {
-      setPromptData({
-        conversationId,
-        [props.dataKey]: textAreaRef.current.value
-      });
+      // setPromptData({
+      //   conversationId,
+      //   [props.dataKey]: textAreaRef.current.value
+      // });
     }
   }
 

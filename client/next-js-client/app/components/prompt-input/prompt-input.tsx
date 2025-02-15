@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import classes from './prompt-input.module.css';
 import { sendPromptData } from "@/app/actions";
-import { getConversationIdBS } from "@/app/store/data-service";
+// import { getConversationIdBS } from "@/app/store/data-service";
 
 const PromptInput = () => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -16,14 +16,14 @@ const PromptInput = () => {
       textAreaRef.current.focus();
     }
 
-    getConversationIdBS().subscribe({
-      next: id => {
-        if (id) {
-          setConversationId(id);
-        }
-      },
-      error: err => console.log('Error getting conversation id in prompt-element', err)
-    });  
+    // getConversationIdBS().subscribe({
+    //   next: id => {
+    //     if (id) {
+    //       setConversationId(id);
+    //     }
+    //   },
+    //   error: err => console.log('Error getting conversation id in prompt-element', err)
+    // });  
   }, [])
 
   const onPromptChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
