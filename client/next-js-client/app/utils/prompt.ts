@@ -1,5 +1,5 @@
-import Prompt from "../model/chat-prompt";
+import ChatPrompt from "../model/chat-prompt";
 
-export const buildPrompt = (prompt: Prompt) => {
+export const buildPrompt = (prompt: ChatPrompt) => {
 
 };

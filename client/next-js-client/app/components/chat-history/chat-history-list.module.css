@@ -3,6 +3,9 @@
   border-right: 1px solid #ccc;
   padding: 20px;
 }
+.Content h3 {
+  margin-bottom: 30px;
+}
 .List {
   display: flex;
   flex-direction: column;

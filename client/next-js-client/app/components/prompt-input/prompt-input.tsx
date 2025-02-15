@@ -3,7 +3,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import classes from './prompt-input.module.css';
-import { sendPromptData } from "@/app/actions";
+// import { sendPromptData } from "@/app/actions";
 // import { getConversationIdBS } from "@/app/store/data-service";
 
 const PromptInput = () => {
@@ -35,10 +35,10 @@ const PromptInput = () => {
       event.preventDefault();
 
       if (prompt && conversationId) {
-        await sendPromptData({ 
-          conversationId,
-          prompt 
-        });
+        // await sendPromptData({ 
+        //   conversationId,
+        //   prompt 
+        // });
       }
     }
   };
@@ -49,7 +49,7 @@ const PromptInput = () => {
       className={classes.Textarea}
       onChange={onPromptChangeHandler}
       onKeyDown={onKeyDownHandler}
-      placeholder="Enter prompt to send to the chat engine..."
+      placeholder="Enter the goal here. This is what you want to know. You may have provided the optional role, perspective and optional extra information, but the goal is most important. What do you want GPT to generate? A marketing plan, travel itinerary, an essay on the life of Shakespeare?"
     />
   )
 }

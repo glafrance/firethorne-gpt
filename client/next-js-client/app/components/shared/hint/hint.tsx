@@ -1,22 +1,42 @@
 'use client';
 
-import { FC, useState } from "react";
-import { IoMdHelp } from "react-icons/io";
+import { FC, useEffect, useState } from "react";
 
 import classes from "./hint.module.css";
+import { getHelpPopupBS, setHelpPopup } from "@/app/store/data-service";
+import { HelpPopup } from "@/app/model/help-popup";
 
 interface Props {
-  content: Array<string>;
+  content: HelpPopup;
 }
 
 const Hint: FC<Props> = ({content}) => {
   const [showHelp, setShowHelp] = useState(false);
 
-  function toggleHelp() {
-    setShowHelp(curr => !curr);
+  function handleHelpPopupChange() {
+
   }
 
-  const helpContent = content.map((line, index) => <p key={index}>{`${line}`}</p>);
+  useEffect(() => {
+    getHelpPopupBS().subscribe({
+      next: result => {
+        setShowHelp(result === content.id);
+      },
+      error: err => {
+        console.log('Error getting update on open help popup');
+      }
+    })
+  }, []);
+
+  function toggleHelp() {
+    if (showHelp) {
+      setHelpPopup('');      
+    } else {
+      setHelpPopup(content.id);
+    }
+  }
+
+  const helpContent = content.helpText.map((line, index) => <p key={index}>{`${line}`}</p>);
 
   const help = (
     <div className={classes.HintContainer}>
@@ -31,7 +51,7 @@ const Hint: FC<Props> = ({content}) => {
 
   return (
     <>
-      {!showHelp && <IoMdHelp size={20} className={classes.Clickable} onClick={toggleHelp} />}
+      {!showHelp && <p className={classes.Clickable} onClick={toggleHelp}>?</p>}
       {showHelp && help}
     </>
   )

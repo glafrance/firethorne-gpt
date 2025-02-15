@@ -3,13 +3,14 @@
 import { FC, useEffect, useRef, useState } from "react";
 import Hint from "../shared/hint/hint";
 import classes from "./prompt-element.module.css";  
+import { HelpPopup } from "@/app/model/help-popup";
 // import { getConversationIdBS, setPromptData } from "@/app/store/data-service";
 
 interface Props {
   label: string;
   dataKey: string;
   placeholder: string;
-  helpContent: Array<string>;
+  helpContent: HelpPopup;
   height?: number;
 }
 

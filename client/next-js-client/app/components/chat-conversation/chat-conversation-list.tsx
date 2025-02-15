@@ -2,11 +2,11 @@
 
 import { FC, useEffect, useRef } from "react";
 import ChatConversationItem from "./chat-conversation-item";
-import classes from './chat-history-list.module.css';
-import ChatConversation from "@/app/model/chat-conversation";
+import classes from './chat-conversation-item.module.css';
+import ChatConversation from "@/app/model/conversation";
 
 interface Props {
-  chatConversation: ChatConversation
+  chatConversation: ChatConversation | null;
 }
 
 const ChatConversationList: FC<Props> = ({chatConversation}) => {
