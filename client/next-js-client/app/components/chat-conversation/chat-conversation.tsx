@@ -1,8 +1,8 @@
 import Conversation from "@/app/model/conversation";
 import PromptEngineering from "../prompt-engineering/prompt-engineering";
-import PromptInput from "../prompt-input/prompt-input";
 import ChatConversationList from "./chat-conversation-list";
 import classes from './chat-conversation.module.css';
+import GoalInput from "../goal-input/goal-input";
 
 export default function ChatConversation() {
   const conversation: Conversation | null = null;
@@ -15,7 +15,7 @@ export default function ChatConversation() {
         <p>Only a goal is required, and for simple queries that may be enough, but often the role, perspective, and additional information are essential.</p>
       </div>
       <PromptEngineering />
-      <PromptInput />
+      <GoalInput />
       <ChatConversationList chatConversation={conversation} />
     </div>
   )

@@ -4,6 +4,7 @@ import History from "../model/history";
 import FirstGoal from "../model/first-goal";
 import Conversation from "../model/conversation";
 import ChatPrompt from "../model/chat-prompt";
+import { buildPrompt } from "../utils/prompt";
 
 // Properties for data and for observables //
 
@@ -105,20 +106,28 @@ export async function loadChatConversation(id: string): Promise<Conversation> {
 
 export async function submitPrompt() {
   if (_prompt && _prompt.goal) {
-    const response = await fetch('http://localhost:3100/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(prompt)
-    });
+    const prompt: string = buildPrompt(_prompt);
 
-    if (!response.ok) {
-      console.log("Failed to submit prompt.");
-      throw new Error("Failed to submit prompt.");
+    if (prompt !== '') {
+      const input = {
+        prompt,
+        promptData: _prompt
+      };
+      const response = await fetch('http://localhost:3100/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(input)
+      });
+  
+      if (!response.ok) {
+        console.log("Failed to submit prompt.");
+        throw new Error("Failed to submit prompt.");
+      }
+      
+      const resData = await response.json();
+      return resData;  
     }
-    
-    const resData = await response.json();
-    return resData;
   }
 }

@@ -1,15 +1,15 @@
 'use client'
 
-import { FC, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import ChatConversationItem from "./chat-conversation-item";
 import classes from './chat-conversation-item.module.css';
 import ChatConversation from "@/app/model/conversation";
 
-interface Props {
+interface ChatConversationListProps {
   chatConversation: ChatConversation | null;
 }
 
-const ChatConversationList: FC<Props> = ({chatConversation}) => {
+export default function ChatConversationList({chatConversation}: ChatConversationListProps) {
   const hiddenRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -39,5 +39,3 @@ const ChatConversationList: FC<Props> = ({chatConversation}) => {
     </>
   )
 }
-
-export default ChatConversationList;

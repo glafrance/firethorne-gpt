@@ -6,11 +6,11 @@ import classes from "./hint.module.css";
 import { getHelpPopupBS, setHelpPopup } from "@/app/store/data-service";
 import { HelpPopup } from "@/app/model/help-popup";
 
-interface Props {
+interface HintProps {
   content: HelpPopup;
 }
 
-const Hint: FC<Props> = ({content}) => {
+export default function Hint({content}: HintProps) {
   const [showHelp, setShowHelp] = useState(false);
 
   function handleHelpPopupChange() {
@@ -56,5 +56,3 @@ const Hint: FC<Props> = ({content}) => {
     </>
   )
 };
-
-export default Hint;

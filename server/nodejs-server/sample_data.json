@@ -2,30 +2,42 @@
   {
     "items": [
       {
-        "prompt": {
-          "goal": "Name two fruits, name only."
+        "promptData": {
+          "goal": "List two fruits, name only",
+          "role": "",
+          "perspective": "",
+          "additionalInfo": ""
         },
-        "response": "Apple, orange"
+        "prompt": "List two fruits, name only",
+        "response": "Apple, Banana."
       }
     ]
   },
   {
     "items": [
       {
-        "prompt": {
-          "goal": "List two US states, name only."
+        "promptData": {
+          "goal": "List two US states, name only",
+          "role": "",
+          "perspective": "",
+          "additionalInfo": ""
         },
-        "response": "Texas, Iowa"
+        "prompt": "List two US states, name only",
+        "response": "Florida, Iowa."
       }
     ]
   },
   {
     "items": [
       {
-        "prompt": {
-          "goal": "List two JavaScript frameworks, name only."
+        "promptData": {
+          "goal": "List two JavaScript frameworks, name only",
+          "role": "",
+          "perspective": "",
+          "additionalInfo": ""
         },
-        "response": "Angular, ReactJS"
+        "prompt": "List two JavaScript frameworkds, name only",
+        "response": "Angular, React."
       }
     ]
   }

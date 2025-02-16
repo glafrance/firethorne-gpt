@@ -6,6 +6,7 @@ import { HelpPopup } from "@/app/model/help-popup";
 import Hint from "../shared/hint/hint";
 import classes from './extra-info.module.css';
 import { useRef, useState } from "react";
+import { setPrompt } from "@/app/store/data-service";
 
 interface ExtraInfoItem {
   id: string;
@@ -47,7 +48,11 @@ export default function ExtraInfo() {
       };
 
       setExtraInfo(curr => {
-        return [...curr, item];
+        const newExtraInfo = [...curr, item];
+
+        setPrompt('additionalInformation', newExtraInfo.join(", "));
+
+        return newExtraInfo;
       });
 
       setInputValue('');
@@ -56,7 +61,11 @@ export default function ExtraInfo() {
 
   function deleteItem(id: string) {
     setExtraInfo(curr => {
-      const newInfo = curr.filter(item => item.id !== id);
+      const newExtraInfo = curr.filter(item => item.id !== id);
+
+      setPrompt('additionalInformation', newExtraInfo.join(", "));
+
+      const newInfo = newExtraInfo;
       return newInfo;
     });
   }
