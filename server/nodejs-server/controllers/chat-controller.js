@@ -30,7 +30,7 @@ exports.getFirstGoals = asyncHandler(async (req, res) => {
           const firstItem = conversation.items[0];
           firstGoals.push({
             id: conversation._id,
-            goal: firstItem.prompt.goal},
+            goal: firstItem.promptData.goal},
           );
         }
       });
