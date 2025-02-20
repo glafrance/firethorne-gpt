@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import flameImg from '../../assets/images/flame.png';
-import classes from './chat-history-item.module.css';
+import classes from './chat-conversation-item.module.css';
 
 interface ChatConversationItemProps {
   key: string,

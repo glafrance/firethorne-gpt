@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const chatRouter = require('./routes/chat');
+const conversationRouter = require('./routes/conversation');
 
 mongoose.set("strictQuery", false);
 const mongoDB = 'mongodb://127.0.0.1/firethorne_gpt';
@@ -18,7 +18,7 @@ app.use(express.json());
 
 const port = process.env.PORT || 3100;
 
-app.use('/chat', chatRouter);
+app.use('/conversation', conversationRouter);
 
 
 app.listen(port, () => {

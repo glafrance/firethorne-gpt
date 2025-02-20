@@ -21,19 +21,19 @@ export default function ChatConversationList({chatConversation}: ChatConversatio
     }  
   }, [chatConversation, hiddenRef]);
 
-  // const conversation = chatData && chatData.chatHistory && chatData.chatHistory.map(
-  //   item => <ChatHistoryItem 
-  //     key={item.id} 
-  //     prompt={item.prompt} 
-  //     response={item.response} 
-  //   />
-  // );
+  const conversation = chatConversation && chatConversation.items && chatConversation.items.map(
+    (item, index) => <ChatConversationItem 
+      key={`${index}`} 
+      prompt={item.prompt} 
+      response={item.response} 
+    />
+  );
 
   return (
     <>
       <div
         className={classes.List}>
-        {/* {history} */}
+        {conversation}
         <div ref={hiddenRef}></div>
       </div>
     </>

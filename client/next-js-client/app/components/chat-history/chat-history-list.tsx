@@ -1,4 +1,3 @@
-
 import { getConversationFirstGoalsBS, loadConversationFirstGoals } from "@/app/store/data-service";
 import classes from "./chat-history-list.module.css"
 import ChatHistoryItem from "./chat-history-item";
@@ -18,7 +17,7 @@ export default function ChatHistoryList() {
 
   loadConversationFirstGoals();  
 
-  let historyItems = firstGoals?.map((item) => {
+  const historyItems = firstGoals?.map((item) => {
     return <ChatHistoryItem key={item.id} firstGoal={item} /> 
   });
 

@@ -3,9 +3,28 @@ import PromptEngineering from "../prompt-engineering/prompt-engineering";
 import ChatConversationList from "./chat-conversation-list";
 import classes from './chat-conversation.module.css';
 import GoalInput from "../goal-input/goal-input";
+import { getActiveConversationBS } from "@/app/store/data-service";
+import { revalidatePath } from "next/cache";
 
 export default function ChatConversation() {
-  const conversation: Conversation | null = null;
+  let activeConversation: Conversation | null = null;
+
+  getActiveConversationBS().subscribe({
+    next: conversation => {
+      console.log('chat-conversation.tsx', conversation);
+      activeConversation = conversation;
+    },
+    error: err => {
+      console.log("Failed to get updated active conversation: ", err);
+    }
+  });
+
+  let conversation;
+  
+  if (activeConversation) {
+    conversation = <ChatConversationList chatConversation={activeConversation} />;
+    revalidatePath('/');
+  }
 
   return (
     <div className={classes.Conversation}>
@@ -16,7 +35,7 @@ export default function ChatConversation() {
       </div>
       <PromptEngineering />
       <GoalInput />
-      <ChatConversationList chatConversation={conversation} />
+      {conversation}
     </div>
   )
 }

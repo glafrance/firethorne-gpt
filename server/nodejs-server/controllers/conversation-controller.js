@@ -1,48 +1,34 @@
 const OpenAI = require('openai');
 const openaiObj = new OpenAI();
-const { v4: uuidv4 } =  require('uuid');
 const asyncHandler = require('express-async-handler');
 
-const ChatConversation = require('../models/chat-conversation');
+const Conversation = require('../models/conversation');
 
-exports.getAllChatConversations = asyncHandler(async (req, res) => {
+exports.getFirstPrompts = asyncHandler(async (req, res) => {
   try {
-    const chatConversations = await ChatConversation.find();
+    const conversations = await Conversation.find();
+    const firstPrompts = [];
 
-    const retVal = {
-      conversations: chatConversations
-    };
-
-    res.status(200).json(retVal);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving chat conversations', error });
-  }
-});
-
-exports.getFirstGoals = asyncHandler(async (req, res) => {
-  try {
-    const chatConversations = await ChatConversation.find();
-    const firstGoals = [];
-
-    if (chatConversations?.length) {
-      chatConversations.map(conversation => {
+    if (conversations?.length) {
+      conversations.map(conversation => {
         if (conversation?.items?.length) {
           const firstItem = conversation.items[0];
-          firstGoals.push({
+
+          firstPrompts.push({
             id: conversation._id,
-            goal: firstItem.promptData.goal},
+            prompt: firstItem.prompt},
           );
         }
       });
     }
 
     const retVal = {
-      firstGoals
+      firstPrompts
     };
 
     res.status(200).json(retVal);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving chat conversations', error });
+    res.status(500).json({ message: 'Error retrieving first prompts from history of conversations', error });
   }
 });
 
@@ -52,13 +38,13 @@ exports.getConversation = asyncHandler(async (req, res) => {
 
     if (req.params?.id) {
       const id = req.params.id;
-      const result = await ChatConversation.findById(id);
+      const result = await Conversation.findById(id);
       conversation = result;
     }
 
     res.status(200).json({ conversation });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving chat conversations', error });
+    res.status(500).json({ message: 'Error retrieving chat conversation', error });
   }
 });
 
@@ -67,10 +53,9 @@ exports.createConversation = asyncHandler(async (req, res) => {
   try {
     const input = req.body;
   
-    if (input?.prompt && input?.promptData) {
-      const promptText = input.prompt;
-    
-      const chatResponse = await sendChatData(promptText);
+    if (input?.prompt) {
+      const prompt = input.prompt;
+      const chatResponse = await sendChatData(prompt);
     
       if (chatResponse?.choices?.length) {
         const item = chatResponse.choices[0];
@@ -79,13 +64,10 @@ exports.createConversation = asyncHandler(async (req, res) => {
           const response = item.message?.content;
     
           if (response) {
-            const id = uuidv4();
-
-            const conversation = new ChatConversation({
+            const conversation = new Conversation({
               items: [
                 {
-                  promptData: input.promptData,
-                  prompt: input.prompt,
+                  prompt,
                   response    
                 }                
               ]
@@ -96,7 +78,7 @@ exports.createConversation = asyncHandler(async (req, res) => {
             res.send(
               { 
                 result: 'ok',
-                id
+                conversation
               }
             );      
           } else {
@@ -112,7 +94,7 @@ exports.createConversation = asyncHandler(async (req, res) => {
       sendErrorResponse();
     }
   } catch (err) {
-    res.status(500).json({ message: 'Error creating new chat conversation', error });
+    res.status(500).json({ message: 'Error creating new chat conversation', err });
   }
 });
   

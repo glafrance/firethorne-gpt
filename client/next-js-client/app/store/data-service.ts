@@ -17,6 +17,8 @@ const _chatHistoryBS = new BehaviorSubject<History | null>(null);
 
 const _conversationFirstGoalsBS = new BehaviorSubject<FirstGoal[]>([]);
 
+const _activeConversationBS: BehaviorSubject<Conversation | null> = new BehaviorSubject<Conversation | null>(null);
+
 export function getHelpPopupBS() {
   return _helpPopupBS;
 }
@@ -31,6 +33,10 @@ export function getChatHistoryBS() {
 
 export function getConversationFirstGoalsBS() {
   return _conversationFirstGoalsBS;
+}
+
+export function getActiveConversationBS() {
+  return _activeConversationBS;
 }
 
 // Functions to set data monitored by observables //
@@ -64,6 +70,10 @@ export async function loadConversationFirstGoals() {
   _conversationFirstGoalsBS.next(firstGoals);
 }
 
+export function setActiveConversation(conversation: Conversation) {
+  _activeConversationBS.next(conversation);
+}
+
 // Functions to make API calls //
 
 export async function getChatHistory(): Promise<History> {
@@ -91,7 +101,7 @@ export async function getFirstGoals(): Promise<FirstGoal[]> {
   return firstGoals;
 }
 
-export async function loadChatConversation(id: string): Promise<Conversation> {
+export async function loadChatConversation(id: string) {
   const response = await fetch(`http://localhost:3100/chat/conversations/${id}`);
 
   if (!response.ok) {
@@ -100,8 +110,8 @@ export async function loadChatConversation(id: string): Promise<Conversation> {
   }
 
   const resData = await response.json();
-
-  return resData;
+  console.log('resData.conversation', resData.conversation);
+  setActiveConversation(resData.conversation);
 }
 
 export async function submitPrompt() {
@@ -127,7 +137,7 @@ export async function submitPrompt() {
       }
       
       const resData = await response.json();
-      return resData;  
+      setActiveConversation(resData);  
     }
   }
 }
