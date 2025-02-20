@@ -1,0 +1,19 @@
+.Element {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+}
+.Element label {
+  margin-right: 10px;
+  width: 100px;
+  text-align: end;
+}
+.Element textarea {
+  width: 100%;
+  height: 30px;
+  padding: 5px 15px;
+  margin-right: 20px;
+  outline: none;
+  resize: none;
+}

@@ -34,8 +34,8 @@ export default function ChatConversation() {
         <p>Only a goal is required, and for simple queries that may be enough, but often the role, perspective, and additional information are essential.</p>
       </div>
       <PromptEngineering />
-      <GoalInput />
       {conversation}
+      <GoalInput />
     </div>
   )
 }

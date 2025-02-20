@@ -1,0 +1,11 @@
+.Textarea {
+  width: 100%;
+  height: 150px;
+  min-height: 150px;
+  resize: none;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+}

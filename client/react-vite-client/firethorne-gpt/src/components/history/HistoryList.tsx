@@ -1,7 +1,8 @@
-import { useGetFirstPromptsQuery } from '../../store/conversationApi';
-import classes from "./chat-history-list.module.css"
+import { useGetFirstPromptsQuery } from '../../store/conversation-api';
+import classes from "./history-list.module.css"
+import HistoryItem from "./HistoryItem";
 
-export default function ChatHistoryList() {
+export default function HistoryList() {
   const { data, error, isLoading } = useGetFirstPromptsQuery();
 
   if (isLoading) return <p>Loading prompts...</p>;
@@ -9,9 +10,7 @@ export default function ChatHistoryList() {
 
   const content = data?.firstPrompts && (
     <ul>
-      {data.firstPrompts.map(item => (
-        <li key={item.id} title={item.prompt}>{item.prompt}</li>
-      ))}
+      { data.firstPrompts.map( prompt => <HistoryItem key={prompt.id} prompt={prompt} /> )}
     </ul>
   );
 
