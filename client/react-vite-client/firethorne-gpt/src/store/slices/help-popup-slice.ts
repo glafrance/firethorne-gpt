@@ -19,4 +19,4 @@ const helpPopupSlice = createSlice({
 });
 
 export const { setActivePopup } = helpPopupSlice.actions;
-export default helpPopupSlice;
+export default helpPopupSlice.reducer;

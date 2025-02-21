@@ -1,6 +1,6 @@
 import classes from './App.module.css';
 import HistoryList from "./components/history/HistoryList";
-import Conversation from "./components/conversation/conversation";
+import Conversation from "./components/conversation/Conversation";
 
 function App() {
   return (

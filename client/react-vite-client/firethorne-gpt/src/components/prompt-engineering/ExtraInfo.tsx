@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import Hint, { HintContent } from "../shared/hint/hint";
+import Hint, { HintContent } from "../shared/hint/Hint";
 import classes from './extra-info.module.css';
 import { setPromptData } from "../../store/slices/prompt-data-slice";
+import { RootState } from "../../store/store";
 
 interface ExtraInfoItem {
   id: string;
@@ -14,6 +15,7 @@ interface ExtraInfoItem {
 export default function ExtraInfo() {
   const [extraInfo, setExtraInfo] = useState<ExtraInfoItem[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
+  const promptData = useSelector((state: RootState) => state.promptData.data);
   const dispatch = useDispatch();
 
   const helpContent: HintContent = {
@@ -28,12 +30,32 @@ export default function ExtraInfo() {
     ]
   };
 
+  useEffect(() => {
+    if (!promptData || Object.keys(promptData).length === 0) {
+      setExtraInfo([]);
+      setInputValue('');
+    }
+  }, [promptData]);
+
+  useEffect(() => {
+    const extraInfoString = extraInfo.reduce((retVal, curr) => {
+      return retVal + curr.text;
+    }, "");
+    dispatch(setPromptData({ field: 'additionalInformation', value: extraInfoString }));
+  }, [dispatch, extraInfo]);
+
   function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(evt.target.value);
   }
 
   function handleKeyDown(evt: React.KeyboardEvent<HTMLInputElement>) {
     if (evt.code === 'Enter') {
+      addItem();
+    }
+  }
+
+  function handleBlur() {
+    if (inputValue !== '') {
       addItem();
     }
   }
@@ -47,9 +69,6 @@ export default function ExtraInfo() {
 
       setExtraInfo(curr => {
         const newExtraInfo = [...curr, item];
-
-        dispatch(setPromptData({ field: 'additionalInformation', value: newExtraInfo.join(", ") }));
-
         return newExtraInfo;
       });
 
@@ -60,9 +79,6 @@ export default function ExtraInfo() {
   function deleteItem(id: string) {
     setExtraInfo(curr => {
       const newExtraInfo = curr.filter(item => item.id !== id);
-
-      dispatch(setPromptData({ field: 'additionalInformation', value: newExtraInfo.join(", ") }));
-
       const newInfo = newExtraInfo;
       return newInfo;
     });
@@ -87,6 +103,7 @@ export default function ExtraInfo() {
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
           placeholder="500 words or less, no additional text or description, etc." />
         <p className={classes.AddBtn} onClick={addItem}>+</p>
         <Hint id={helpContent.id} helpText={helpContent.helpText} />

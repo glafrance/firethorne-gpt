@@ -1,4 +1,4 @@
-import { HintContent } from '../shared/hint/hint';
+import { HintContent } from "../shared/hint/Hint";
 import PromptElement from "./PromptElement";
 import ExtraInfo from "./ExtraInfo";
 import classes from './prompt-engineering.module.css';
@@ -15,7 +15,7 @@ export default function PromptEngineering() {
     id: 'perspective',
     helpText: [
       "Role is 'who', perspective is 'how'. Perspective is the viewpoint from which the chat engine should respond.",
-      "The role might be 'travel blogger', the perspective might be 'first time visitor' or 'seasoned visitor'.",
+      "The role might be 'politician', the perspective might be 'adventurous' or 'conservative'.",
       "For simple questions the perspective is unnecessary, but for more complex queries the perspective, like the role, and allow the chat engine to provide a response that is closer to your goal."
     ]
   };
@@ -31,7 +31,7 @@ export default function PromptEngineering() {
       <PromptElement 
         label="Perspective:" 
         dataKey='perspective' 
-        placeholder="social influencer, government official, teacher, etc." 
+        placeholder="adventurous, conservative, concerned, inquisitive, etc." 
         helpContent={perspectiveContent} 
       />
       <ExtraInfo />

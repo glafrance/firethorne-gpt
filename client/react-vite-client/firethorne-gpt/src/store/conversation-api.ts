@@ -31,12 +31,13 @@ export const conversationApi = createApi({
     getConversationById: builder.query<Conversation, string>({
       query: (id) => `/${id}`,
     }),
-    createConversation: builder.mutation<Conversation, void>({
-      query: () => ({
+    createConversation: builder.mutation<Conversation, { prompt: string }>({
+      query: (body) => ({
         url: '/',
         method: 'POST',
+        body,
       }),
-    }),
+    }),    
   }),
 });
 

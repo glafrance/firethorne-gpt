@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export interface Prompt {
+  role?: string;
+  perspective?: string;
+  goal?: string;
+  additionalInformation?: string;
+};
+
 export interface PromptDataState {
-  promptData: {
-    role?: string;
-    perspective?: string;
-    goal?: string;
-    additionalInformation?: string;
-  } | null
+  data: Prompt | null
 }
 
 const initialState: PromptDataState = {
-  promptData: null,
+  data: null,
 };
 
 const promptDataSlice = createSlice({
@@ -21,13 +23,16 @@ const promptDataSlice = createSlice({
       const field = action.payload.field;
       const value = action.payload.value;
 
-      state.promptData = {
-        ...state.promptData,
+      state.data = {
+        ...state.data,
         [field]: value
       };
+    },
+    reset: (state) => {
+      state.data = null;
     },
   },
 });
 
-export const { setPromptData } = promptDataSlice.actions;
-export default promptDataSlice;
+export const { setPromptData, reset } = promptDataSlice.actions;
+export default promptDataSlice.reducer;

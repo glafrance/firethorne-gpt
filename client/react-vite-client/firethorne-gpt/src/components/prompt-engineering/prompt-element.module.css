@@ -1,6 +1,6 @@
 .Element {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   position: relative;
   width: 100%;
 }

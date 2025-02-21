@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { HelpPopupState } from "../../../store/slices/help-popup-slice";
 import { setActivePopup } from "../../../store/slices/help-popup-slice";
 import classes from "./hint.module.css";
+import { RootState } from "../../../store/store";
 
 export interface HintContent {
   id: string;
@@ -12,7 +12,7 @@ export interface HintContent {
 
 export default function Hint({id, helpText}: HintContent) {
   const [showHelp, setShowHelp] = useState(false);
-  const activePopup = useSelector((state: HelpPopupState) => state.activePopup);
+  const activePopup = useSelector((state: RootState) => state.helpPopup.activePopup);
   const dispatch = useDispatch();
 
   useEffect(() => {
